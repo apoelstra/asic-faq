@@ -1,0 +1,301 @@
+% Template by ASP
+\documentclass[letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[top=3cm, bottom=3cm, left=3.85cm, right=3.85cm]{geometry}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{amsmath,amssymb,amsthm,wasysym}
+\usepackage{graphicx,mathptmx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{hyperref}
+
+\newtheoremstyle{xxx}
+  {0pt}{1pt}
+  {\color{BrickRed}}
+  {0pt}
+  {\bf}{.}{ }{}
+\newtheoremstyle{yyy}
+  {0pt}{1pt}
+  {\color{OliveGreen}}
+  {0pt}
+  {\bf}{.}{ }{}
+\newtheoremstyle{zzz}
+  {0pt}{1pt}
+  {\color{Blue}}
+  {0pt}
+  {\bf}{.}{ }{}
+\newtheoremstyle{evil}
+  {2pt}{2pt}
+  {\color{red} \bf}
+  {0pt}
+  {\bf}{.}{ }{}
+
+\theoremstyle{xxx}
+\newtheorem{thrm}{Theorem}
+\newtheorem{prop}{Proposition}
+\theoremstyle{evil}
+\newtheorem{warn}{Warning}
+\newtheorem{evil}{Evil}
+\theoremstyle{yyy}
+\newtheorem{corl}{Corollary}
+\newtheorem{lmma}{Lemma}
+\theoremstyle{plain}
+\newtheorem{expl}{Example}
+\theoremstyle{zzz}
+\newtheorem{defn}{Definition}
+
+\newcommand{\notn}{\paragraph{Notation.}}
+\newcommand{\recl}{\paragraph{Recall.}}
+\newcommand{\rmrk}{\paragraph{Remark.}}
+\newcommand{\note}{\paragraph{Note.}}
+
+\begin{document}
+
+% Two-column title block
+\begin{minipage}[b]{0.7\linewidth}
+{\huge ASICs and Decentralization FAQ}
+\end{minipage}
+\begin{minipage}[b]{0.3\linewidth}
+  \begin{flushright}
+    andytoshi{\tiny \\
+    \tiny 1m5JtHuGgWYaFV7K6mSCnpzVVmheqoZMg}
+  \end{flushright}
+\end{minipage}
+\\
+
+% Actual content start
+\section{What is Proof of Work?}
+\begin{enumerate}
+\item \textbf{What is Proof of Work?}
+
+As it applies to Bitcoin, a \emph{proof of work} is a computational proof
+that some scarce resource was consumed. Such a proof is possible because
+it appears that computational resources are physically bounded by available
+time, space and energy\footnote{See, for example, \url{http://arxiv.org/abs/quant-ph/0502072}
+for a discussion on the emergence of fundamental computational limits from
+physics.}
+
+Further, a proof of work commits to some data, effectively "signing" it
+with some consumed resource.
+
+\item \textbf{How and why is it used?}
+
+Such proofs are useful because they ensure malicious actors are limited
+in their capacity to produce valid proofs of alternate histories, giving
+the remaining actors sufficient time and bandwidth to come to consensus
+on a single history, as long as they have more resources than the malicious
+ones.
+
+Bitcoin's main innovation was aligning economic incentives to discourage
+resource-rich actors from becoming malicious.
+
+Here a ``history'' is formed by a chain of proofs-of-work, each of which
+signs (a) a collection of valid Bitcoin transactions, and (b) the previous
+proof-of-work. Users are able to achieve consensus not only of the transactions,
+but of their order in time.
+
+\item \textbf{How does the proof-of-work affect consensus?}
+
+In order that all actors (including those not ``mining'' or generating proofs
+of work) can quickly reach consensus, the proof-of-work must be quickly
+verifiable. The greater the ratio of generation time to verification time,
+the better.
+
+In order than all actors can reach consensus, the proof-of-work must require
+enough time that previously proven transaction history can propagate and be
+verified before the history is extended. Here ``enough time'' depends on
+both on the amount of data to be verified (the blocksize) as well as the
+speed at which the proof-of-work itself can be verified.
+
+\item \textbf{How does the proof-of-work affect decentralization?}
+
+In order that individual actors do not gain a disproportionate advantage ---
+so that in the economic limit one actor has all the mining power and
+leases it out, obviating the proof-of-work since this is functionally
+identical (but ecologically trillions of trillions of times worse) to
+this actor simply digitally signing each transaction --- the proof-of-work
+must be completely parallelizable and require no state. That is, one actor
+with $2N$ hashing power should have the same return as two actors each with
+$N$ hashing power.
+
+Bitcoin achieves this property by using a proof-of-work based on finding
+partial hash preimages. The work is accomplished by repeated hashing, and
+each attempt has a tiny i.i.d. chance of success (this is derived from the
+so-called \emph{random oracle assumption} of the specific hash algorithm).
+This gives rise to a Poisson process, which is well-understood but in some
+ways unintuitive.
+
+Another crucial way that the proof-of-work affects decentralization is
+in its physical attributes, which we cover in the next section.
+\end{enumerate}
+
+\section{The physics of Proof-of-Work.}
+
+\begin{enumerate}
+
+\item \textbf{What is (ir)reversible computing and why does it matter?}
+
+As this is not a physics paper, this section necessarily contains
+several claims with neither detail nor justification. The curious
+reader is encouraged to read the Wikipidia article
+\footnote{\url{https://en.wikipedia.org/wiki/Reversible_computing}}
+and its references.
+
+Reversible, or adiabatic computing, is a term for computing without
+increase in entropy. Such computations are reversible in time and
+therefore need to be injective as functions of their input, so a
+hash-based proof-of-work cannot be completely reversible. However,
+some components of the hash function may be reversibly computable,
+which is useful because reversible computations require no energy
+--- more concretely, in the limit as computational speed goes to
+zero, the energy requirement of reversible computations also goes
+to zero.
+
+Ordinary, non-reversible computations are subject to Landauer's
+principle\footnote{\url{https://en.wikipedia.org/wiki/Landauer\%27s_principle}}
+which provides a lower bound on the energy required to flip a
+single bit.
+
+What this means is that ultimately, any irreversible proof of
+computational work is also a proof of physical work, \emph{i.e.}
+energy dissipation.
+
+\item \textbf{What is the thermodynamic limit?}
+
+The thermodynamic limit describes the state at which proof-of-work
+is actually done at Landauer's lower bound for required energy
+dissipation. At this point, we are actually better off than the
+requirement that a single $2N$-powered actor has the same advantage
+as two $N$-powered actors, because now $N$ is proportional not only
+to hashing speed but also to heat dissipation requirements, and it
+is easier for two physically-separated actors to dissipate heat than
+for just one.
+
+Therefore, in the thermodynamic limit we have a physical incentive
+for decentralization.
+
+Fortunately, because the thermodynamic limit is also the limit of
+energy efficiency, Bitcoin's incentives for efficient proof-of-work
+are also incentives for miners to push toward the thermodynamic
+limit.
+\end{enumerate}
+
+\section{Actual frequently asked questions.}
+
+\begin{enumerate}
+\item \textbf{Are ASIC's evil?}
+
+No, dedicated hardware brings us closer to the thermodynamic limit,
+and is therefore eventually a good thing for mining decentralization.
+Also, because ASIC's produce more hashes for the same amount of
+energy, they produce stronger proofs-of-work with proportionally less
+environmental impact.
+
+However, ASIC's bring with them a risk of manufacturer centralization,
+such as what we currently see with Bitcoin. Market forces will
+eventually break this monopoly, but one thing speeding up the process
+is that Bitcoin uses the \texttt{SHA2} hashing algorithm, which was
+designed for easy development of dedicated hardware. Therefore,
+relatively little startup capital is needed to develop Bitcoin ASIC's.
+
+Further, regardless of one's personal feeling toward ASIC's, they
+are inevitable. Dedicated hardware will always be more efficient
+than general-purpose hardware (exactly because it is closer to the
+thermodynamic limit) and Bitcoin's incentives are aligned for
+ever-increasing efficiency.
+
+\item \textbf{Is ASIC resistance desirable?}
+
+No. ASIC resistance typically involves increasing algorithmic
+complexity to discourage ASIC developers. However, ASIC's are
+still inevitable; all ASIC resistance does is increase the
+startup capital required and therefore increase centralization
+of manufacturing.
+
+Further, increasing the complexity of proof generation often means
+also increasing the complexity of proof validation, often
+disproportionately slow. This discourages (unpaid) non-mining
+validators, which also increases centralization.
+
+\item \textbf{Is ASIC resistance possible?}
+
+ASIC resistance, in the sense of making life difficult for ASIC
+manufacturers (and therefore reducing the number of distinct
+manufacturers) is possible. But it is halting-complete to create
+an algorithm which runs at the same speed on general-purpose and
+dedicated hardware, so ultimately ASIC resistance is futile.
+
+(Schemes such as ``the developers will just change the proof-of-work
+algorithm if ASIC's appear'' do not even make sense --- in a decentralized
+currency the developers have no such power, while in a centralized
+currency proof-of-work is a completely unnecessary waste of power.)
+
+\item \textbf{Is memory hardness desirable?}
+
+No. Memory hardness has the effect of increasing ASIC board footprint,
+weakening the heat-dissipation decentralization provided by the
+thermodynamic limit. Further, it increases the capital costs of
+mining equipment relative to the energy costs, which also encourages
+centralization (since established miners have amortized their equipment
+more than new miners). These effects are amplified by the fact that
+SRAM is both several times faster and several times more expensive
+than DRAM.
+
+Also, memory hard proofs-of-work often require lots of memory on the
+part of the verifiers\footnote{Though not necessarily --- see for example
+John Tromp's ``cuckoo cycle'' scheme at \url{https://bitcointalk.org/index.php?topic=451177.0}.},
+which is bad for decentralization as already discussed.
+
+As an aside, since memory is far away and expensive to access on general
+purpose computers, memory hardness actually increases the benefit provided
+by ASIC's! This is contrary to the goals of most memory-hard advocates,
+and as we have seen above, memory-hardness worsens the centralizing effects
+of ASIC's while weakening the decentralizing effects\footnote{In fact, at
+the time of this writing, \texttt{scrypt} ASIC's are just appearing on the
+market, and do indeed provide a proportionally greater gain in hashpower
+than did \texttt{SHA2} ASIC's.}.
+
+\item \textbf{Is \texttt{scrypt} better than \texttt{SHA2}?}
+
+No, for a few reasons:
+\begin{enumerate}
+\item It is much slower to validate, reducing scalability and discouraging
+non-mining validation.
+\item It is a more complex ``ASIC-resistant'' algorithm. See above.
+\item It is more memory-hard than \texttt{SHA2} (though depending on parameters,
+it can hardly be considered ``memory-hard'' --- see Litecoin's settings, for
+example). See above.
+\end{enumerate}
+
+\item \textbf{Is Primecoin better than \texttt{SHA2}?}
+No, for a few reasons:
+\begin{enumerate}
+\item It is much slower to validate, reducing scalability and discouraging
+non-mining validation.
+\item It is a more complex ``ASIC-resistant'' algorithm. See above.
+\item It is an ad-hoc algorithm with no reason to believe that a $2N$-powered
+party has the same advantage as an $N$-powered party.
+\end{enumerate}
+
+\item \textbf{What about ``useful'' proofs-of-work?}
+
+These are typically bad ideas for all the same reasons that Primecoin is,
+and also bad for a new reason: from the network's perspective, the purpose
+of mining is to secure the currency, but from the miner's perspective, the
+purpose of mining is to gain the block reward. These two motivations
+complement each other, since a block reward is worth more in a secure
+currency than in a sham one, so the miner is incentivized to secure the
+network rather than attacking it.
+
+However, if the miner is motivated not by the block reward, but by some
+social or scientific purpose related to the proof-of-work evaluation,
+then these incentives are no longer aligned (and may in fact be opposed,
+if the miner wants to discourage others from encroaching on his work),
+weakening the security of the network.
+
+\end{enumerate}
+
+\end{document}
+
+
