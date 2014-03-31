@@ -266,10 +266,10 @@ energy, they produce stronger proofs-of-work with proportionally less
 environmental impact.
 
 However, ASIC's bring with them a risk of manufacturer centralization,
-such as what we currently see with Bitcoin. Market forces will
-eventually break this monopoly, but one thing speeding up the process
-is that Bitcoin uses the \texttt{SHA2} hashing algorithm, which was
-designed for easy development of dedicated hardware. Therefore,
+such as what we saw with Bitcoin in the early days of ASIC mining.
+Market forces eventually broke this monopoly, and one thing which sped
+up the process is that Bitcoin uses the \texttt{SHA2} hashing algorithm,
+which was designed for easy development of dedicated hardware. Therefore,
 relatively little startup capital is needed to develop Bitcoin ASIC's.
 
 Further, regardless of one's personal feeling toward ASIC's, they
@@ -331,6 +331,13 @@ the time of this writing, \texttt{scrypt} ASIC's are just appearing on the
 market, and do indeed provide a proportionally greater gain in hashpower
 than did \texttt{SHA2} ASIC's.}.
 
+One more thing worth mentioning is time-memory tradeoff (TMTO). This is
+a property of an algorithm which allows higher memory usage to be traded
+for a heavier computational load. An algorithm which is highly susceptible
+to TMTO has poorly defined memory hardness, which at the very least
+complicates analysis. It may also cause an algorithm to fail to be optimization
+free.
+
 \item \textbf{Is \texttt{scrypt} better than \texttt{SHA2}?}
 
 No, for a few reasons:
@@ -351,6 +358,8 @@ non-mining validation.
 \item It is a more complex ``ASIC-resistant'' algorithm. See above.
 \item It is an ad-hoc algorithm with no reason to believe that it is progress-free,
 approximation-free or optimization-free.
+\item Its proofs are large, meaning expensive verification and higher bandwidth
+requirements.
 \end{enumerate}
 
 \item \textbf{What about ``useful'' proofs-of-work?}
@@ -382,7 +391,7 @@ and energy-intensive mining operations.
 
 However, it does not appear that there is a viable way to achieve consensus
 through proof of work, due to the so-called ``nothing at stake'' problem\footnote{Thanks
-to Greg Maxwell for this name.}.
+to Andrew Miller for this name.}.
 
 \item \textbf{In principle, how does Proof of Stake work?}
 
