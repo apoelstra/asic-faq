@@ -65,6 +65,36 @@
 \\
 
 % Actual content start
+\section{About this document.}
+\begin{enumerate}
+\item \textbf{What is the thesis of this document?}
+
+The main thrust of this document is that proof-of-work schemes ought
+to be as simple and dependent on raw computational power as possible.
+That is, a proof-of-work should tend toward the thermodynamic limit
+(see a later section for this term) as quickly and directly as possible.
+
+\item \textbf{Is Proof of Work interesting?}
+
+Not really \smiley. It is one of the most popular changes to Bitcoin done
+by copycat ``alt'' currencies, but it does not enable any new use cases
+or features for users of the currency. It is in effect a bikeshed
+painting\footnote{See \url{http://bikeshed.com/} for a history of this
+phrase.} change, though as we will see it is not without its dangers.
+
+\item \textbf{Why did you write this document?}
+
+For two reasons:
+\begin{enumerate}
+\item to organize and lay out some folklore about proof-of-work which has
+not been written down in one place;
+\item to answer some common questions and suggestions regarding Bitcoin's
+proof-of-work and those of other currencies (which as established above,
+is not interesting and therefore no fun to answer repeatedly).
+\end{enumerate}
+
+\end{enumerate}
+
 \section{What is Proof of Work?}
 \begin{enumerate}
 \item \textbf{What is Proof of Work?}
@@ -128,6 +158,49 @@ ways unintuitive.
 
 Another crucial way that the proof-of-work affects decentralization is
 in its physical attributes, which we cover in the next section.
+
+\item \textbf{Why does the Poisson process matter?}
+
+This is important enough to warrant its own question. To avoid centralization,
+it is important that miners can join or leave the network at any time without
+penalty. It is also important that miners with a lot of computational power
+should not achieve a disproportionate benefit.
+
+These two requirements are related, because they effectively say that there
+should be no distinction between devoting more time to mining or devoting
+more computational power to mining.
+
+To guarantee this, the computation of proof-of-work must be \emph{progress free},
+that is, the proof-of-work calculation at time $T$ should not depend on any part
+of a calculation at time $T' < T$. This, along with the fact that successful
+proof-of-work calculation should be rare enough to limit block speed, implies
+that the probability of a proof-of-work being calculated in a time interval
+$[t_0, t_1]$ is proportional to $(t_1 - t_0)$ but independent of $t_0$ and $t_1$.
+
+These conditions are sufficient to give rise to a \emph{Poisson process}\footnote{See
+\url{https://en.wikipedia.org/wiki/Poisson_process}.}.
+
+As an example of an unintuitive behaviour of Poisson processes, the expected time
+right now to the next Bitcoin block is ten minutes (plus or minus the difference
+between actual hashpower and the difficulty-targeted hashpower). This is independent
+of how long ago the last block was found, even though, on average, blocks are found
+every ten minutes.
+
+\item \textbf{What other algorithmic considerations are there?}
+
+Two additional requirements, from Greg Maxwell, are:
+\begin{enumerate}
+\item The proof-of-work must be \emph{optimization free}; that is, there should not
+be any algorithmic speedups which would give an advantage over the standard algorithm.
+If a speedup exists and is found, there is strong motivation for the discoverer to
+use it secretly rather than publishing it, gaining an unfair advantage. This contributes
+to centralization.
+\item The proof-of-work must be \emph{approximation free}; that is, there should not
+be a defective variant of the proof-of-work which achieves a speedup in excess of its
+defect rate. (If this is done in software, it is a special case of the above; however
+it can be done in hardware as well \emph{e.g.} by using a bad multiplexer which cannot
+demux certain bitstrings.)
+\end{enumerate}
 \end{enumerate}
 
 \section{The physics of Proof-of-Work.}
@@ -222,9 +295,11 @@ validators, which also increases centralization.
 
 ASIC resistance, in the sense of making life difficult for ASIC
 manufacturers (and therefore reducing the number of distinct
-manufacturers) is possible. But it is halting-complete to create
+manufacturers) is possible. But it is impossible to create
 an algorithm which runs at the same speed on general-purpose and
-dedicated hardware, so ultimately ASIC resistance is futile.
+dedicated hardware (since general-purpose hardware contains many
+extraneous features, e.g. communication buses for peripherals),
+and  so ultimately ASIC resistance is futile.
 
 (Schemes such as ``the developers will just change the proof-of-work
 algorithm if ASIC's appear'' do not even make sense --- in a decentralized
@@ -274,8 +349,8 @@ No, for a few reasons:
 \item It is much slower to validate, reducing scalability and discouraging
 non-mining validation.
 \item It is a more complex ``ASIC-resistant'' algorithm. See above.
-\item It is an ad-hoc algorithm with no reason to believe that a $2N$-powered
-party has the same advantage as an $N$-powered party.
+\item It is an ad-hoc algorithm with no reason to believe that it is progress-free,
+approximation-free or optimization-free.
 \end{enumerate}
 
 \item \textbf{What about ``useful'' proofs-of-work?}
@@ -296,6 +371,45 @@ weakening the security of the network.
 
 \end{enumerate}
 
-\end{document}
+\section{Proof of Stake}
+\begin{enumerate}
+\item \textbf{What is Proof of Stake?}
 
+Proof of stake is the idea that rather than consuming some physical resource,
+perhaps miners should consume the cryptocurrency itself, thus ``bootstrapping''
+the security of the system from its own value, rather than requiring expensive
+and energy-intensive mining operations.
+
+However, it does not appear that there is a viable way to achieve consensus
+through proof of work, due to the so-called ``nothing at stake'' problem\footnote{Thanks
+to Greg Maxwell for this name.}.
+
+\item \textbf{In principle, how does Proof of Stake work?}
+
+The typical way that proof of stake is accomplished is by associating ``votes''
+to individual coins, and to require blocks to be voted highly in order to be
+valid. To improve scalability and prevent ``tyranny of the rich'' scenarios, each
+block is voted on by a small set of coin holders, who are determined as part
+of the currency's consensus algorithm.
+
+\item \textbf{What is the ``nothing at stake'' problem?}
+
+The problem here is that ultimately, there is no cost for users to vote on multiple
+forks of the blockchain, but there is some benefit. Therefore, the idea that miners
+will behave honestly to protect their own coins' value is actually a tragedy of the
+commons.
+
+The benefit of mining on multiple forks is that the blocks themselves determine
+the distribution of coins and therefore the distribution of future votes. In fact,
+the exact voters of future blocks must be deterministic, perhaps chosen by a PRF
+on the contents of past blocks, so by choosing which blocks to vote on, a miner
+can skew the distribution of future votes in his favour. As an extreme case, the
+miner could simply do a proof-of-work, where the ``work'' is finding new blocks
+which give him every future vote.
+
+This is fatal for centralization, and because each miner is individually
+incentivized to act this way, it is also fatal for consensus.
+
+\end{enumerate}
+\end{document}
 
