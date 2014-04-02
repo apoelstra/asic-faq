@@ -132,7 +132,7 @@ of work) can quickly reach consensus, the proof-of-work must be quickly
 verifiable. The greater the ratio of generation time to verification time,
 the better.
 
-In order than all actors can reach consensus, the proof-of-work must require
+In order that all actors can reach consensus, the proof-of-work must require
 enough time that previously proven transaction history can propagate and be
 verified before the history is extended. Here ``enough time'' depends on
 both on the amount of data to be verified (the blocksize) as well as the
@@ -267,8 +267,12 @@ environmental impact.
 
 However, ASIC's bring with them a risk of manufacturer centralization,
 such as what we saw with Bitcoin in the early days of ASIC mining.
-Market forces eventually broke this monopoly, and one thing which sped
-up the process is that Bitcoin uses the \texttt{SHA2} hashing algorithm,
+Market forces eventually broke this monopoly\footnote{Well, this is a
+bit of a disingenuous statement. While there are many ASIC manufacturers
+on the market, these firms design IC's and outsource the actual IC fabrication.
+IC manufacturing is an extremely (and increasingly so) centralized industry.}, 
+and one thing which sped up the process is that Bitcoin uses the \texttt{SHA2}
+hashing algorithm,
 which was designed for easy development of dedicated hardware. Therefore,
 relatively little startup capital is needed to develop Bitcoin ASIC's.
 
