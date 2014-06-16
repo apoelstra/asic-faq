@@ -251,6 +251,57 @@ Fortunately, because the thermodynamic limit is also the limit of
 energy efficiency, Bitcoin's incentives for efficient proof-of-work
 are also incentives for miners to push toward the thermodynamic
 limit.
+
+\item \textbf{Who cares about heat dissipation? There are massive economies of scale
+in buying electricity.}
+
+A frequent claim in this document is that using thermodynamic limits to obtain
+a proof of work creates incentives against centralization because there are
+diseconomies of scale in cooling, since for any mining operation there are
+limits to (a) how much heat can be effectively dissipated and (b) how much waste
+heat can be used for other purposes. To increase heat dissipation capacity
+requires an engineering and construction outlay; as long as waste heat is useful
+mining is effectively free, while past that point it is not.
+
+However, no matter what the economics of cooling are (and the above claims are
+hardly uncontroversial), several people have contacted me, most notably Tim
+Swanson\footnote{Private communication, largely based on data published at
+\url{http://bitcoinmagazine.com/12914/bitcoins-made-in-china/}.}
+and phantomcircuit\footnote{On \texttt{\#bitcoin}, an unlogged IRC channel.} to
+point out that there are massive economies of scale in electrical production,
+enough to dwarf any decentralization caused by cooling.
+
+I have three responses to this:
+\begin{enumerate}
+\item First, these problems are made worse by using other physical limits (e.g.
+speed-of-light, as in a memory-hard PoW) which don't require miners to cool
+their equipment. So if Bitcoin's economics force centralization, it is an open
+problem what (if anything) doesn't.
+
+\item In places where the waste heat is directly useful, mining has near-zero
+running cost, so electricity is effectively cheap even if not actually cheap.
+As capital costs come down (as ASIC manufacturers stop being backlogged) this
+will become a more important factor.
+
+\item The main beneficiary of cheap-electricity centralization are a few well-connected
+businesses in China. This is something of an accident of history. Over the next few
+decades we will likely see this countered by
+\begin{enumerate}
+\item China's increasing wealth causing their regulatory and environmental costs
+to come in line with western nations; there will also be pressure against this
+sort of monopolistic behaviour.
+\item Highly centralized power production is inefficient because of line losses.
+As technology, such as solar power, matures, it will be possible to produce power
+more locally with lower startup costs and less dependence on geopolitical factors.
+\end{enumerate}
+These comments reflect a very long-term view of Bitcoin; before Bitcoin can
+achieve its goals as a worldwide stateless currency where decentralization really
+matters, there are more pressing problems (usability, scalability, privacy)
+which need to be dealt with. My expectation is that by the time these problems are
+solved, these comments will be more immediate.
+\end{enumerate}
+
+
 \end{enumerate}
 
 \section{Actual frequently asked questions.}
@@ -427,7 +478,6 @@ Certainly. The ability to cryptographically prove one's stake in a system is an
 exciting feature which is unique to cryptographic goods. It can be used to construct
 new and innovative protocols which I have no understanding of \smiley.
 It just can't be used to create distributed consensus.
-
 
 \end{enumerate}
 \end{document}
