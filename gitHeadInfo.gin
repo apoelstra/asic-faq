@@ -1,0 +1,15 @@
+\usepackage[%
+		shash={fe81626},
+		lhash={fe8162661b59f87ac746c1705da0b5b0a92294f0},
+		authname={Andrew Poelstra},
+		authemail={apoelstra@wpsoftware.net},
+		authsdate={2015-03-22},
+		authidate={2015-03-22 20:54:16 -0500},
+		authudate={1427075656},
+		commname={Andrew Poelstra},
+		commemail={apoelstra@wpsoftware.net},
+		commsdate={2015-03-22},
+		commidate={2015-03-22 20:54:16 -0500},
+		commudate={1427075656},
+		refnames={ (HEAD, master)}
+	]{gitsetinfo}
